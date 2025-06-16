@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/df-mc/dragonfly/server"
-	"github.com/df-mc/dragonfly/server/player/chat"
-	"github.com/pelletier/go-toml"
 	"log/slog"
 	"os"
+	"time"
+
+	"github.com/df-mc/dragonfly/server"
+	"github.com/df-mc/dragonfly/server/player"
+	"github.com/df-mc/dragonfly/server/player/chat"
+	"github.com/df-mc/dragonfly/server/world"
+	"github.com/pelletier/go-toml"
 )
 
 func main() {
@@ -22,8 +26,42 @@ func main() {
 
 	srv.Listen()
 	for p := range srv.Accept() {
-		_ = p
+		p.Handle(newHandler(p))
 	}
+}
+
+type handler struct {
+	c chan struct{}
+
+	player.NopHandler
+}
+
+func newHandler(p *player.Player) handler {
+	h := handler{
+		c: make(chan struct{}),
+	}
+	ha := p.H()
+	t := time.NewTicker(time.Second)
+	go func() {
+		for {
+			select {
+			case <-t.C:
+				ha.ExecWorld(func(tx *world.Tx, e world.Entity) {
+					p = e.(*player.Player)
+					p.SetScoreTag(time.Now().String())
+				})
+			case <-h.c:
+				t.Stop()
+				return
+			}
+		}
+	}()
+
+	return h
+}
+
+func (h handler) HandleQuit(*player.Player) {
+	close(h.c)
 }
 
 // readConfig reads the configuration from the config.toml file, or creates the
