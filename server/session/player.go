@@ -586,6 +586,17 @@ func (s *Session) EnableInstantRespawn(enable bool) {
 	s.sendGameRules([]protocol.GameRule{{Name: "doimmediaterespawn", Value: enable}})
 }
 
+// Emoting returns whether the session is currently emoting or not.
+func (s *Session) Emoting() bool {
+	expiry := s.emoteExpiration.Load()
+	return !time.Now().After(*expiry)
+}
+
+// StopEmoting resets the emote expiration of the session.
+func (s *Session) StopEmoting() {
+	s.emoteExpiration.Store(&time.Time{})
+}
+
 // HandleInventories starts handling the inventories of the Controllable entity of the session. It sends packets when
 // slots in the inventory are changed.
 func (s *Session) HandleInventories(tx *world.Tx, c Controllable, inv, offHand, enderChest, ui *inventory.Inventory, armour *inventory.Armour, heldSlot *uint32) {

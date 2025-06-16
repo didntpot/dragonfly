@@ -73,6 +73,7 @@ type Session struct {
 	openedContainerID              atomic.Uint32
 	openedWindow                   atomic.Pointer[inventory.Inventory]
 	openedPos                      atomic.Pointer[cube.Pos]
+	emoteExpiration                atomic.Pointer[time.Time]
 	swingingArm                    atomic.Bool
 	changingSlot                   atomic.Bool
 	changingDimension              atomic.Bool
@@ -169,6 +170,7 @@ func (conf Config) New(conn Conn) *Session {
 	}
 	s.openedWindow.Store(inventory.New(1, nil))
 	s.openedPos.Store(&cube.Pos{})
+	s.emoteExpiration.Store(&time.Time{})
 
 	var scoreboardName string
 	var scoreboardLines []string

@@ -1145,6 +1145,14 @@ func (p *Player) StopFlying() {
 	p.session().SendGameMode(p)
 }
 
+// Emoting returns whether the player is currently emoting or not.
+func (p *Player) Emoting() bool {
+	if p.s == session.Nop {
+		return false
+	}
+	return p.s.Emoting()
+}
+
 // Jump makes the player jump if they are on ground. It exhausts the player by 0.05 food points, an additional 0.15
 // is exhausted if the player is sprint jumping.
 func (p *Player) Jump() {
@@ -2116,6 +2124,10 @@ func (p *Player) Move(deltaPos mgl64.Vec3, deltaYaw, deltaPitch float64) {
 				p.Hurt(force, entity.GlideDamageSource{})
 			}
 		}
+	}
+
+	if p.Emoting() && deltaPos.Len() >= 0.1 {
+		p.session().StopEmoting()
 	}
 
 	_, submergedBefore := p.tx.Liquid(cube.PosFromVec3(pos.Add(mgl64.Vec3{0, p.EyeHeight()})))

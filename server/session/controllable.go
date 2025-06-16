@@ -89,6 +89,7 @@ type Controllable interface {
 	StartGliding()
 	Gliding() bool
 	StopGliding()
+	Emoting() bool
 	Jump()
 
 	StartBreaking(pos cube.Pos, face cube.Face)
