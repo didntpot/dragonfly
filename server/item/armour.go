@@ -112,9 +112,21 @@ func (ArmourTierNetherite) KnockBackResistance() float64 { return 0.1 }
 func (ArmourTierNetherite) EnchantmentValue() int        { return 15 }
 func (ArmourTierNetherite) Name() string                 { return "netherite" }
 
+// ArmourTierCopper is the ArmourTier of copper armour.
+type ArmourTierCopper struct{}
+
+func (ArmourTierCopper) BaseDurability() float64      { return 122 }
+func (ArmourTierCopper) Toughness() float64           { return 0 }
+func (ArmourTierCopper) KnockBackResistance() float64 { return 0 }
+func (ArmourTierCopper) EnchantmentValue() int        { return 8 }
+func (ArmourTierCopper) Name() string                 { return "copper" }
+
 // ArmourTiers returns a list of all armour tiers.
 func ArmourTiers() []ArmourTier {
-	return []ArmourTier{ArmourTierLeather{}, ArmourTierGold{}, ArmourTierChain{}, ArmourTierIron{}, ArmourTierDiamond{}, ArmourTierNetherite{}}
+	return []ArmourTier{
+		ArmourTierLeather{}, ArmourTierGold{}, ArmourTierChain{}, ArmourTierIron{}, ArmourTierDiamond{},
+		ArmourTierNetherite{}, ArmourTierCopper{},
+	}
 }
 
 // armourTierRepairable returns true if the ArmourTier passed is repairable.
@@ -132,6 +144,8 @@ func armourTierRepairable(tier ArmourTier) func(Stack) bool {
 			_, ok = stack.Item().(Diamond)
 		case ArmourTierNetherite:
 			_, ok = stack.Item().(NetheriteIngot)
+		case ArmourTierCopper:
+			_, ok = stack.Item().(CopperIngot)
 		}
 		return ok
 	}

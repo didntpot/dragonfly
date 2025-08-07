@@ -477,6 +477,8 @@ func tierToSoundEvent(tier item.ArmourTier) uint32 {
 		return packet.SoundEventEquipDiamond
 	case item.ArmourTierNetherite:
 		return packet.SoundEventEquipNetherite
+	case item.ArmourTierCopper:
+		return packet.SoundEventEquipCopper
 	}
 	return packet.SoundEventEquipGeneric
 }

@@ -1,8 +1,9 @@
 package item
 
 import (
-	"github.com/df-mc/dragonfly/server/world"
 	"time"
+
+	"github.com/df-mc/dragonfly/server/world"
 )
 
 // Pickaxe is a tool generally used for mining stone-like blocks and ores at a higher speed and to obtain
@@ -66,6 +67,8 @@ func (p Pickaxe) SmeltInfo() SmeltInfo {
 		return newOreSmeltInfo(NewStack(IronNugget{}, 1), 0.1)
 	case ToolTierGold:
 		return newOreSmeltInfo(NewStack(GoldNugget{}, 1), 0.1)
+	case ToolTierCopper:
+		return newOreSmeltInfo(NewStack(CopperNugget{}, 1), 0.1)
 	}
 	return SmeltInfo{}
 }

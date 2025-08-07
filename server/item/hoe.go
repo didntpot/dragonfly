@@ -1,11 +1,12 @@
 package item
 
 import (
+	"time"
+
 	"github.com/df-mc/dragonfly/server/block/cube"
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/df-mc/dragonfly/server/world/sound"
 	"github.com/go-gl/mathgl/mgl64"
-	"time"
 )
 
 // Hoe is a tool generally used to till dirt and grass blocks into farmland blocks for planting crops.
@@ -90,6 +91,8 @@ func (h Hoe) SmeltInfo() SmeltInfo {
 		return newOreSmeltInfo(NewStack(IronNugget{}, 1), 0.1)
 	case ToolTierGold:
 		return newOreSmeltInfo(NewStack(GoldNugget{}, 1), 0.1)
+	case ToolTierCopper:
+		return newOreSmeltInfo(NewStack(CopperNugget{}, 1), 0.1)
 	}
 	return SmeltInfo{}
 }

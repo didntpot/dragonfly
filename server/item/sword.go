@@ -1,8 +1,9 @@
 package item
 
 import (
-	"github.com/df-mc/dragonfly/server/world"
 	"time"
+
+	"github.com/df-mc/dragonfly/server/world"
 )
 
 // Sword is a tool generally used to attack enemies. In addition, it may be used to mine any block slightly
@@ -60,6 +61,8 @@ func (s Sword) SmeltInfo() SmeltInfo {
 		return newOreSmeltInfo(NewStack(IronNugget{}, 1), 0.1)
 	case ToolTierGold:
 		return newOreSmeltInfo(NewStack(GoldNugget{}, 1), 0.1)
+	case ToolTierCopper:
+		return newOreSmeltInfo(NewStack(CopperNugget{}, 1), 0.1)
 	}
 	return SmeltInfo{}
 }

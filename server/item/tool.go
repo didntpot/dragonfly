@@ -20,7 +20,7 @@ var (
 	// TypeSword is the ToolType for swords.
 	TypeSword = ToolType{5}
 
-	// ToolTierWood is the ToolTier of wood tools. This is the lowest possible tier.
+	// ToolTierWood is the ToolTier of wood tools.
 	ToolTierWood = ToolTier{HarvestLevel: 1, Durability: 59, BaseMiningEfficiency: 2, BaseAttackDamage: 1, EnchantmentValue: 15, Name: "wooden"}
 	// ToolTierGold is the ToolTier of gold tools.
 	ToolTierGold = ToolTier{HarvestLevel: 1, Durability: 32, BaseMiningEfficiency: 12, BaseAttackDamage: 1, EnchantmentValue: 22, Name: "golden"}
@@ -30,8 +30,10 @@ var (
 	ToolTierIron = ToolTier{HarvestLevel: 3, Durability: 250, BaseMiningEfficiency: 6, BaseAttackDamage: 3, EnchantmentValue: 14, Name: "iron"}
 	// ToolTierDiamond is the ToolTier of diamond tools.
 	ToolTierDiamond = ToolTier{HarvestLevel: 4, Durability: 1561, BaseMiningEfficiency: 8, BaseAttackDamage: 4, EnchantmentValue: 10, Name: "diamond"}
-	// ToolTierNetherite is the ToolTier of netherite tools. This is the highest possible tier.
+	// ToolTierNetherite is the ToolTier of netherite tools.
 	ToolTierNetherite = ToolTier{HarvestLevel: 4, Durability: 2031, BaseMiningEfficiency: 9, BaseAttackDamage: 5, EnchantmentValue: 15, Name: "netherite"}
+	// ToolTierCopper is the ToolTier of copper tools.
+	ToolTierCopper = ToolTier{HarvestLevel: 1, Durability: 191, BaseMiningEfficiency: 5, BaseAttackDamage: 2, EnchantmentValue: 13, Name: "copper"}
 )
 
 type (
@@ -78,7 +80,7 @@ type (
 
 // ToolTiers returns a ToolTier slice containing all available tiers.
 func ToolTiers() []ToolTier {
-	return []ToolTier{ToolTierWood, ToolTierGold, ToolTierStone, ToolTierIron, ToolTierDiamond, ToolTierNetherite}
+	return []ToolTier{ToolTierWood, ToolTierGold, ToolTierStone, ToolTierIron, ToolTierDiamond, ToolTierNetherite, ToolTierCopper}
 }
 
 // ToolType ...
@@ -113,6 +115,9 @@ func toolTierRepairable(tier ToolTier) func(Stack) bool {
 			return ok
 		case ToolTierNetherite:
 			_, ok := stack.Item().(NetheriteIngot)
+			return ok
+		case ToolTierCopper:
+			_, ok := stack.Item().(CopperIngot)
 			return ok
 		}
 		return false
