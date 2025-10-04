@@ -1,6 +1,9 @@
 package session
 
 import (
+	"math"
+	"time"
+
 	"github.com/df-mc/dragonfly/server/entity"
 	"github.com/df-mc/dragonfly/server/entity/effect"
 	"github.com/df-mc/dragonfly/server/internal/nbtconv"
@@ -10,8 +13,6 @@ import (
 	"github.com/go-gl/mathgl/mgl64"
 	"github.com/google/uuid"
 	"github.com/sandertv/gophertunnel/minecraft/protocol"
-	"math"
-	"time"
 )
 
 // parseEntityMetadata returns an entity metadata object with default values. It is equivalent to setting
@@ -166,6 +167,9 @@ func (s *Session) addSpecificMetadata(e any, m protocol.EntityMetadata) {
 	if mv, ok := e.(markVariable); ok {
 		m[protocol.EntityDataKeyMarkVariant] = mv.MarkVariant()
 	}
+	if c, ok := e.(collidable); ok && c.Collidable() {
+		m.SetFlag(protocol.EntityDataKeyFlagsTwo, protocol.EntityDataFlagCollidable&63)
+	}
 }
 
 type sneaker interface {
@@ -275,4 +279,8 @@ type variable interface {
 
 type markVariable interface {
 	MarkVariant() int32
+}
+
+type collidable interface {
+	Collidable() bool
 }
